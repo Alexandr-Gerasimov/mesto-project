@@ -1,0 +1,10 @@
+.element__like {
+    width: 22px;
+    background-image: url(../../../images/Vector\ \(4\).svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.element__like:hover {
+    opacity: .6;
+}

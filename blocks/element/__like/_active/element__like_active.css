@@ -1,0 +1,6 @@
+.element__like_active {
+    width: 22px;
+    background-image: url(../../../../images/Union.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
