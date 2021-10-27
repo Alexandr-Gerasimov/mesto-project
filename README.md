@@ -4,4 +4,4 @@
 
 В проекте использованы html, css, flex, grid, медиазапросы и popup.
 
-Ссылка на GitHub Pages:
+Ссылка на GitHub Pages: https://alexandr-gerasimov.github.io/mesto-project/
