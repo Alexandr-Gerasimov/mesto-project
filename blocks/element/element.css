@@ -1,6 +1,8 @@
 .element {
+    width: 282px;
     display: flex;
     flex-direction: column;
+    justify-self: center;
     overflow: hidden;
     background-color: #fff;
     border-radius: 10px;

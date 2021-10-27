@@ -1,0 +1,11 @@
+.profile__icon {
+    display: flex;
+    flex-direction: row;
+}
+
+@media screen and (max-width: 767px) {
+    .profile__icon {
+        margin: 0 auto;
+        margin-bottom: 36px;
+    }
+   }
