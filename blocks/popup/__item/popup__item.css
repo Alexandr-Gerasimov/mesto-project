@@ -3,14 +3,14 @@
     border-top: none;
     border-left: none;
     border-right: none;
-    border-bottom: 1px solid #000;
-    height: 27px;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
     font-size: 14px;
     line-height: 17px;
     font-weight: normal;
     margin-bottom: 30px;
     margin-left: 36px;
     padding: 0;
+    padding-bottom: 13px;
 }
 
 .popup__item:last-child {
