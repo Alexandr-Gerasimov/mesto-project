@@ -3,6 +3,9 @@
     background-image: url(../../../images/Vector\ \(4\).svg);
     background-repeat: no-repeat;
     background-position: center;
+    border: none;
+    background-color: #fff;
+
 }
 
 .element__like:hover {
