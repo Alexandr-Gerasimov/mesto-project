@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./pages/index.css">
     <title>Mesto</title>
 </head>
 <body>
     <div class="page">
         <header class="header">
-            <img src="images/Vector.svg" alt="логотип Место" class="header__logo">
+            <img src="../images/Vector.svg" alt="логотип Место" class="header__logo">
         </header>
         <section class="profile">
             <div class="profile__section">
-                <img src="images/image.jpg" alt="аватар" class="profile__avatar">
+                <img src="../images/image.jpg" alt="аватар" class="profile__avatar">
                 <div class="profile__icon">
                     <div class="profile-info">
                         <h1 class="profile-info__name">Жак-Ив Кусто</h1>
@@ -26,36 +25,43 @@
             <button type="button" class="profile__add-button"></button>
         </section>
         <section class="elements">
-            
         </section>
         <footer class="footer">
             <p class="footer__text">&copy; 2020 Mesto Russia</p>
         </footer>
     </div>
     <div id="popup-input" class="popup">
-        <form name="profile" class="popup__container">
+        <form name="profile" class="popup__container" novalidate>
             <h2 class="popup__head">Редактировать профиль</h2>
             <button id="close-profile" class="popup__close" type="button">
             </button>
             <fieldset class="popup__input-container">
-                <label class="popup__label" for="profile-name"></label>
-                <input type="text" class="popup__item" id="profile-name" name="profile-name" placeholder="Жак-Ив Кусто" value>
-                <label class="popup__label" for="profile-status"></label>
-                <input type="text" class="popup__item" id="profile-status" name="profile-status" placeholder="Исследователь океана" value>
-                <button type="submit" class="popup__button" name="button">Сохранить</button>
+                <label class="popup__label" for="profile-name">
+                    <input type="text" class="popup__item" id="profile-name" name="profile-name" placeholder="Жак-Ив Кусто" required minlength="2">
+                    <span id="error-profile-name" class="popup__item-error"></span>
+                </label>
+                <label class="popup__label" for="profile-status">
+                    <input type="text" class="popup__item" id="profile-status" name="profile-status" placeholder="Исследователь океана" required minlength="2">
+                    <span id="error-profile-status" class="popup__item-error"></span>
+                </label>
+                <button type="submit" class="popup__button popup__button_disabled" name="button">Сохранить</button>
             </fieldset>
         </form>
     </div>
     <div id="popup-place" class="popup">
-        <form name="profile" class="popup__container">
+        <form name="profile" class="popup__container" novalidate>
             <h2 class="popup__head">Новое место</h2>
             <button id="close-place" class="popup__close" type="button">
             </button>
             <fieldset class="popup__input-container">
-                <label class="popup__label" for="name"></label>
-                <input type="text" class="popup__item" id="card-name" name="name" placeholder="Название" value>
-                <label class="popup__label" for="status"></label>
-                <input type="text" class="popup__item" id="card-image" name="status" placeholder="Ссылка на картинку" value>
+                <label class="popup__label" for="card-name">
+                    <input type="text" class="popup__item" id="card-name" name="name" placeholder="Название" value required minlength="2">
+                    <span id="error-card-name" class="popup__item-error"></span>
+                </label>
+                <label class="popup__label" for="card-image">
+                    <input type="url" class="popup__item" id="card-image" name="status" placeholder="Ссылка на картинку" value required>
+                    <span id="error-card-image" class="popup__item-error"></span>
+                </label>
                 <button type="submit" class="popup__button" name="button">Создать</button>
             </fieldset>
         </form>
@@ -64,7 +70,7 @@
         <div class="popup-image__container">
             <img src="" alt="" class="popup-image__picture">
             <h3 class="popup-image__description"></h3>
-            <button id="close-image" class="popup-image__close" type="button">
+            <button id="close-image" class="popup-image__close" type="button"></button>
         </div>
     </div>
     <template id="card-template">
@@ -77,6 +83,5 @@
             <button type="button" class="element__delete"></button>
         </div>
     </template>
-    <script src="pages/script.js"></script>
 </body>
 </html>

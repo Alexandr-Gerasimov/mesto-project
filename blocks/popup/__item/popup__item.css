@@ -7,10 +7,11 @@
     font-size: 14px;
     line-height: 17px;
     font-weight: normal;
-    margin-bottom: 30px;
     margin-left: 36px;
+    margin-bottom: 17px;
     padding: 0;
     padding-bottom: 13px;
+    padding-top: 13px;
 }
 
 .popup__item:last-child {
