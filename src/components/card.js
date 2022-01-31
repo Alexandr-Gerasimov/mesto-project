@@ -28,13 +28,11 @@ const initialCards = [
 
     //Добавление карточек
 
-const container = document.querySelector('.elements');
-const cardContainer = container.querySelector('.element');
 const cardName = document.querySelector('.element__text');
 const cardImage = document.querySelector('.element__image');
 const formCard = document.getElementById('popup-place');
 
-const hamdleCardRemoveClick = (event) => {
+const handleCardRemoveClick = (event) => {
     event.target.closest('.element').remove()
 }
 
@@ -54,14 +52,13 @@ function addCard(name, link) {
         evt.target.classList.toggle('element__like_active');
     });
 
-    cardElement.querySelector('.element__delete').addEventListener('click', hamdleCardRemoveClick);
-    cardElement.querySelector('.element__image').addEventListener('click', function (evt) {
+    cardElement.querySelector('.element__delete').addEventListener('click', handleCardRemoveClick);
+    imageElement.addEventListener('click', function (evt) {
         evt.preventDefault();
         namePopupImage.src = link
         namePopupImage.alt = name
         namePopupTitle.textContent = name
-        let popupOpen = document.getElementById('popup-pic');
-        popupOpen.classList.add('popup-image_opened');
+        openPopup(imagePopup)
     });
 
     imageElement.src = link
@@ -86,8 +83,7 @@ formCard.addEventListener('submit', function (evt) {
     renderCard(cardList, addCard(name.value, link.value));
     name.value = '';
     link.value = '';
-    let popupOpen = document.getElementById('popup-place');
-    popupOpen.classList.remove('popup_opened');
+    closePopup(cardPopup);
 });
 
 
