@@ -1,52 +1,3 @@
-const openProfileButton = document.querySelector('.profile-info__edit-button');
-const openCardButton = document.querySelector('.profile__add-button');
-const closeProfileButton = document.querySelector('.popup_close_profile');
-const closeCardButton = document.querySelector('.popup_close_card');
-const closeImageButton = document.querySelector('.popup_close_image');
-const profilePopup = document.querySelector('.popup_type_profile');
-const cardPopup = document.querySelector('.popup_type_card');
-const imagePopup = document.querySelector('.popup_type_image');
-const profileElement = document.getElementById('popup-input');
-const profileName = document.querySelector('.profile-info__name');
-const profileStatus = document.querySelector('.profile-info__status');
-const profileNameInput = document.getElementById('profile-name');
-const profileStatusInput = document.getElementById('profile-status');
-
-
-function openPopup(popup) {
-    popup.classList.add('popup_opened');
-}
-
-openProfileButton.addEventListener('click', function () {
-    profileNameInput.value = profileName.textContent;
-    profileStatusInput.value = profileStatus.textContent;
-    openPopup(profilePopup)
-});
-openCardButton.addEventListener('click', function () {
-    openPopup(cardPopup)
-});
-
-function closePopup(popup) {
-    popup.classList.remove('popup_opened');
-}
-
-closeProfileButton.addEventListener('click', function () {
-    closePopup(profilePopup)
-});
-closeCardButton.addEventListener('click', function () {
-    closePopup(cardPopup)
-});
-
-
-function handleProfileSubmit(evt) {
-  evt.preventDefault();
-  profileName.textContent = profileNameInput.value;
-  profileStatus.textContent = profileStatusInput.value;
-  closePopup(profilePopup)
-}
-
-profileElement.addEventListener('submit', handleProfileSubmit);
-
 //Картинки из коробки
 const initialCards = [
     {
@@ -75,7 +26,7 @@ const initialCards = [
     }
     ];
 
-//Добавление карточек
+    //Добавление карточек
 
 const cardName = document.querySelector('.element__text');
 const cardImage = document.querySelector('.element__image');
@@ -135,6 +86,5 @@ formCard.addEventListener('submit', function (evt) {
     closePopup(cardPopup);
 });
 
-closeImageButton.addEventListener('click', function () {
-    closePopup(imagePopup)
-});
+
+
