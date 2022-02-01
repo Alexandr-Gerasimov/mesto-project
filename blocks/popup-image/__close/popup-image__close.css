@@ -1,0 +1,24 @@
+.popup-image__close {
+    width: 32px;
+    height: 32px;
+    background-image: url(../../../images/Close\ Icon.svg);
+    background-color: rgba(0, 0, 0, 0);
+    background-size: contain;
+    border: none;
+    position: absolute;
+    top: -40px;
+    right: -40px;
+}
+
+.popup-image__close:hover {
+    opacity: .6;
+}
+
+@media screen and (max-width: 767px) {
+    .popup-image__close {
+        width: 20px;
+        height: 20px;
+        top: -36px;
+        right: 0;
+    }
+}

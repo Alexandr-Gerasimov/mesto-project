@@ -3,8 +3,13 @@
     border-radius: 50%;
 }
 
+.profile__avatar:hover {
+    opacity: 0.2;
+}
+
 @media screen and (max-width: 767px) {
     .profile__avatar {
         align-self: center;
     }
    }
+

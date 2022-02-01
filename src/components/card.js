@@ -58,7 +58,8 @@ function addCard(name, link) {
         namePopupImage.src = link
         namePopupImage.alt = name
         namePopupTitle.textContent = name
-        openPopup(imagePopup)
+        let popupOpen = document.getElementById('popup-pic');
+        popupOpen.classList.add('popup-image_opened');
     });
 
     imageElement.src = link
@@ -83,8 +84,27 @@ formCard.addEventListener('submit', function (evt) {
     renderCard(cardList, addCard(name.value, link.value));
     name.value = '';
     link.value = '';
-    closePopup(cardPopup);
+    let popupOpen = document.getElementById('popup-pic');
+    popupOpen.classList.remove('popup-image_opened');
 });
 
+//Закрытие Попапа с картинкой
+let closeImage = document.getElementById('close-image');
+function closePic() {
+    let popupOpen = document.getElementById('popup-pic');
+    popupOpen.classList.remove('popup-image_opened');
+}
 
+closeImage.addEventListener('click', closePic);
 
+document.addEventListener('click', function (evt) {
+  if (evt.target.classList.contains('popup-image_opened')) {
+    closePic();
+  }
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Escape') {
+    closePic();
+  }
+});

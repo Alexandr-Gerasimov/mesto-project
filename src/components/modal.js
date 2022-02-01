@@ -71,25 +71,10 @@ function formSubmitHandler(evt) {
   popupOpen.classList.remove('popup_opened')
 }
 
-//Закрытие Попапа с картинкой
-let closeImage = document.getElementById('close-image');
-function closePic() {
-    let popupOpen = document.getElementById('popup-pic');
-    popupOpen.classList.remove('popup-image_opened');
-}
+
 
 formElement.addEventListener('submit', formSubmitHandler);
 
-closeImage.addEventListener('click', closePic);
 
-document.addEventListener('click', function (evt) {
-  if (evt.target.classList.contains('popup-image_opened')) {
-    closePic();
-  }
-});
 
-document.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Escape') {
-    closePic();
-  }
-});
+
