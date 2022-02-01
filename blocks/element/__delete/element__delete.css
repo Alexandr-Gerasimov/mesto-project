@@ -1,7 +1,7 @@
 .element__delete {
     width: 18px;
     height: 20px;
-    background-image: url(../../../images/Trash.svg);
+    background-image: url(../../../src/images/Trash.svg);
     background-repeat: no-repeat;
     background-position: center;
     border: none;

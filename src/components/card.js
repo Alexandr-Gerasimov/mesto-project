@@ -84,8 +84,8 @@ formCard.addEventListener('submit', function (evt) {
     renderCard(cardList, addCard(name.value, link.value));
     name.value = '';
     link.value = '';
-    let popupOpen = document.getElementById('popup-pic');
-    popupOpen.classList.remove('popup-image_opened');
+    let popupOpen = document.getElementById('popup-place');
+    popupOpen.classList.remove('popup_opened');
 });
 
 //Закрытие Попапа с картинкой
