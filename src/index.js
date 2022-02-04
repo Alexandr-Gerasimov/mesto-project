@@ -3,9 +3,15 @@ import './components/validate.js';
 import './components/modal.js';
 import './components/card.js';
 
-const trash = new URL('./images/Trash.svg', import.meta.url);
-const activeLike = new URL('./images/Active-like.svg', import.meta.url);
-const like = new URL('./images/Like.svg', import.meta.url);
-const cross = new URL('./images/Cross.svg', import.meta.url);
-const edit = new URL('./images/Edit.svg', import.meta.url);
-const save = new URL('./images/Save.svg', import.meta.url);
+import { enableValidation } from './components/validate.js'
+
+export const validationConfig = {
+    formSelector: '.popup__container',
+    inputSelector: '.popup__item',
+    inputInvalidClass: 'popup__item_error',
+    errorClass: 'popup__item-error_active',
+    buttonSelector: '.popup__button',
+    buttonDisabledClass: 'popup__button_disabled'
+  };
+
+  enableValidation(validationConfig);

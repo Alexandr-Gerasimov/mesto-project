@@ -1,3 +1,15 @@
+import { closePopup, openPopup, closeByClick } from './utils.js'
+
+const closeImageButton = document.querySelector('.popup_close_image');
+const cardPopup = document.querySelector('.popup_type_card');
+const imagePopup = document.querySelector('.popup_type_image');
+const cardList = document.querySelector('.elements');
+const formCard = document.getElementById('popup-place');
+const name = document.getElementById('card-name');
+const link = document.getElementById('card-image'); 
+const namePopupImage = document.querySelector('.popup-image__picture')
+const namePopupTitle = document.querySelector('.popup-image__description')
+
 //Картинки из коробки
 const initialCards = [
     {
@@ -28,18 +40,9 @@ const initialCards = [
 
     //Добавление карточек
 
-const cardName = document.querySelector('.element__text');
-const cardImage = document.querySelector('.element__image');
-const formCard = document.getElementById('popup-place');
-
 const handleCardRemoveClick = (event) => {
     event.target.closest('.element').remove()
 }
-
-const name = document.getElementById('card-name');
-const link = document.getElementById('card-image'); 
-const namePopupImage = document.querySelector('.popup-image__picture')
-const namePopupTitle = document.querySelector('.popup-image__description')
 
 function addCard(name, link) {
     const cardTemplate = document.querySelector('#card-template').content
@@ -58,8 +61,8 @@ function addCard(name, link) {
         namePopupImage.src = link
         namePopupImage.alt = name
         namePopupTitle.textContent = name
-        let popupOpen = document.getElementById('popup-pic');
-        popupOpen.classList.add('popup-image_opened');
+        openPopup(imagePopup);
+        document.addEventListener('click', closeByClick);
     });
 
     imageElement.src = link
@@ -68,8 +71,6 @@ function addCard(name, link) {
   
     return cardElement
   }
-
-const cardList = document.querySelector('.elements');
 
 initialCards.forEach((item) => {
     cardList.prepend(addCard(item.name, item.link))
@@ -84,27 +85,12 @@ formCard.addEventListener('submit', function (evt) {
     renderCard(cardList, addCard(name.value, link.value));
     name.value = '';
     link.value = '';
-    let popupOpen = document.getElementById('popup-place');
-    popupOpen.classList.remove('popup_opened');
+    closePopup(cardPopup);
 });
 
-//Закрытие Попапа с картинкой
-let closeImage = document.getElementById('close-image');
-function closePic() {
-    let popupOpen = document.getElementById('popup-pic');
-    popupOpen.classList.remove('popup-image_opened');
-}
-
-closeImage.addEventListener('click', closePic);
-
-document.addEventListener('click', function (evt) {
-  if (evt.target.classList.contains('popup-image_opened')) {
-    closePic();
-  }
+closeImageButton.addEventListener('click', function () {
+  const openedPopup = document.querySelector('.popup_opened')
+    closePopup(openedPopup)
 });
 
-document.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Escape') {
-    closePic();
-  }
-});
+

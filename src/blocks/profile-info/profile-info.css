@@ -1,5 +1,6 @@
 .profile-info {
     display: flex;
+    max-width: 300px;
     flex-direction: column;
     margin-top: 22px;
     margin-left: 30px;
@@ -7,6 +8,7 @@
 
 @media screen and (max-width: 767px) {
     .profile-info {
+        max-width: 250px;
         text-align: center;
         margin: 0;
     }
