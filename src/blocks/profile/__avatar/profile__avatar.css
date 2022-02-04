@@ -5,6 +5,8 @@
 
 .profile__avatar:hover {
     opacity: 0.2;
+    background-image: url("../../../images/redact.svg");
+    background-size: cover;
 }
 
 @media screen and (max-width: 767px) {
