@@ -1,0 +1,18 @@
+.profile__redact {
+    visibility: hidden;
+    width: 120px;
+    height: 120px;
+    background-image: url("../../../images/redact.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: relative;
+    right: 120px;
+    top: 0px;
+    z-index: 2;
+}
+
+.profile__redact:hover {
+    visibility: visible;
+}

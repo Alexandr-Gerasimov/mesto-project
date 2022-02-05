@@ -1,11 +1,14 @@
-import { closePopup, openPopup, closeByClick } from './utils.js'
+import { closePopup, openPopup } from './utils.js'
 
 const openProfileButton = document.querySelector('.profile-info__edit-button');
 const openCardButton = document.querySelector('.profile__add-button');
+const openAvatarButton = document.querySelector('.profile__redact');
 const closeProfileButton = document.querySelector('.popup_close_profile');
 const closeCardButton = document.querySelector('.popup_close_card');
+const closeAvatarButton = document.querySelector('.popup_close_avatar');
 const profilePopup = document.querySelector('.popup_type_profile');
 const cardPopup = document.querySelector('.popup_type_card');
+const avatarPopup = document.querySelector('.popup_type_avatar');
 const profileElement = document.getElementById('popup-input');
 const profileName = document.querySelector('.profile-info__name');
 const profileStatus = document.querySelector('.profile-info__status');
@@ -16,20 +19,26 @@ openProfileButton.addEventListener('click', function () {
   profileNameInput.value = profileName.textContent;
   profileStatusInput.value = profileStatus.textContent;
   openPopup(profilePopup);
-  document.addEventListener('click', closeByClick);
 });
 
 openCardButton.addEventListener('click', function () {
   openPopup(cardPopup);
-  document.addEventListener('click', closeByClick);
 });
 
+openAvatarButton.addEventListener('click', function () {
+  openPopup(avatarPopup);
+})
+
 closeProfileButton.addEventListener('click', function () {
-  closePopup(profilePopup)
+  closePopup(profilePopup);
 });
 
 closeCardButton.addEventListener('click', function () {
-  closePopup(cardPopup)
+  closePopup(cardPopup);
+});
+
+closeAvatarButton.addEventListener('click', function () {
+  closePopup(avatarPopup);
 });
 
 

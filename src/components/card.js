@@ -1,4 +1,6 @@
-import { closePopup, openPopup, closeByClick } from './utils.js'
+import { closePopup, openPopup, } from './utils.js'
+import { disableButton } from './validate.js'
+
 
 const closeImageButton = document.querySelector('.popup_close_image');
 const cardPopup = document.querySelector('.popup_type_card');
@@ -9,6 +11,8 @@ const name = document.getElementById('card-name');
 const link = document.getElementById('card-image'); 
 const namePopupImage = document.querySelector('.popup-image__picture')
 const namePopupTitle = document.querySelector('.popup-image__description')
+const buttonSelector = document.querySelector ('.popup__button')
+const buttonDisabledClass = document.querySelector ('popup__button_disabled')
 
 //Картинки из коробки
 const initialCards = [
@@ -62,7 +66,6 @@ function addCard(name, link) {
         namePopupImage.alt = name
         namePopupTitle.textContent = name
         openPopup(imagePopup);
-        document.addEventListener('click', closeByClick);
     });
 
     imageElement.src = link
@@ -85,12 +88,14 @@ formCard.addEventListener('submit', function (evt) {
     renderCard(cardList, addCard(name.value, link.value));
     name.value = '';
     link.value = '';
+    formCard.reset();
+    buttonSelector.classList.add('popup__button_inactive');
+    buttonSelector.setAttribute('disabled', true)
     closePopup(cardPopup);
 });
 
 closeImageButton.addEventListener('click', function () {
-  const openedPopup = document.querySelector('.popup_opened')
-    closePopup(openedPopup)
+    closePopup(imagePopup);
 });
 
 

@@ -3,10 +3,8 @@
     border-radius: 50%;
 }
 
-.profile__avatar:hover {
-    opacity: 0.2;
-    background-image: url("../../../images/redact.svg");
-    background-size: cover;
+.profile__avatar:hover + .profile__redact {
+    visibility: visible;
 }
 
 @media screen and (max-width: 767px) {

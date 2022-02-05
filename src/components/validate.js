@@ -1,4 +1,4 @@
-export { enableValidation }
+export { enableValidation, disableButton, enableButton }
 
 //валидация  
   
@@ -43,10 +43,8 @@ const toggleButtonState = (formElement, inputList, buttonSelector, buttonDisable
   const buttonElement = formElement.querySelector(buttonSelector);
   if (hasInvalidInput(inputList)) {
     disableButton(buttonElement, buttonDisabledClass);
-    buttonElement.setAttribute("disabled", true);
   } else {
     enableButton(buttonElement, buttonDisabledClass);
-    buttonElement.removeAttribute("disabled");
   }
 };
 

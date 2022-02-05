@@ -13,17 +13,17 @@ function closeByEscape(evt) {
 function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', closeByEscape);
-    enableValidation(validationConfig);
+    document.addEventListener('click', closeByClick);
 }
   
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', closeByEscape);
+    document.removeEventListener('click', closeByClick);
 }
 
 function closeByClick(evt) {
     if (evt.target.classList.contains('popup_opened')) {
-        const openedPopup = document.querySelector('.popup_opened')
-        closePopup(openedPopup);
+        closePopup(evt.target);
     }
   }

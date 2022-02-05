@@ -1,6 +1,8 @@
 .profile__icon {
     display: flex;
     flex-direction: row;
+    position: relative;
+    right: 120px;
 }
 
 @media screen and (max-width: 767px) {
