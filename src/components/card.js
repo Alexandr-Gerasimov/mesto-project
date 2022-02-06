@@ -6,7 +6,8 @@ const closeImageButton = document.querySelector('.popup_close_image');
 const cardPopup = document.querySelector('.popup_type_card');
 const imagePopup = document.querySelector('.popup_type_image');
 const cardList = document.querySelector('.elements');
-const formCard = document.getElementById('popup-place');
+const cardTrash = document.querySelector('.element__delete')
+const formCard = document.getElementById('popup-place-two');
 const name = document.getElementById('card-name');
 const link = document.getElementById('card-image'); 
 const namePopupImage = document.querySelector('.popup-image__picture')
@@ -71,7 +72,7 @@ function addCard(name, link) {
     imageElement.src = link
     imageElement.alt = name
     titleElement.textContent = name
-  
+
     return cardElement
   }
 
@@ -83,14 +84,19 @@ const renderCard = (cardList, cardElement) => {
     cardList.prepend(cardElement)
 }
 
-formCard.addEventListener('submit', function (evt) {
+formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
+    console.log(1);
     renderCard(cardList, addCard(name.value, link.value));
+    console.log(2);
     name.value = '';
+    console.log(3);
     link.value = '';
+    console.log(4);
     formCard.reset();
-    buttonSelector.classList.add('popup__button_inactive');
-    buttonSelector.setAttribute('disabled', true)
+    console.log(5);
+    buttonSelector.setAttribute('disabled', true);
+    console.log(6);
     closePopup(cardPopup);
 });
 

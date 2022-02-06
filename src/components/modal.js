@@ -14,6 +14,7 @@ const profileName = document.querySelector('.profile-info__name');
 const profileStatus = document.querySelector('.profile-info__status');
 const profileNameInput = document.getElementById('profile-name');
 const profileStatusInput = document.getElementById('profile-status');
+const link = document.getElementById('profile-avatar');
 
 openProfileButton.addEventListener('click', function () {
   profileNameInput.value = profileName.textContent;
@@ -51,6 +52,15 @@ function handleProfileSubmit(evt) {
 
 profileElement.addEventListener('submit', handleProfileSubmit);
 
+function changeAvatar(link) {
+  const avatarElement = document.querySelector('.profile__avatar');
+  avatarElement.src = link
+  closePopup(avatarPopup);
+}
 
-
-
+avatarPopup.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  changeAvatar(link.value);
+  link.value = '';
+  closePopup(avatarPopup);
+});
