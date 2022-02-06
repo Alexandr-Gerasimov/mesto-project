@@ -1,19 +1,15 @@
 import { closePopup, openPopup, } from './utils.js'
-import { disableButton } from './validate.js'
-
 
 const closeImageButton = document.querySelector('.popup_close_image');
 const cardPopup = document.querySelector('.popup_type_card');
 const imagePopup = document.querySelector('.popup_type_image');
 const cardList = document.querySelector('.elements');
-const cardTrash = document.querySelector('.element__delete')
-const formCard = document.getElementById('popup-place-two');
+const formCard = document.getElementById('popup-place');
 const name = document.getElementById('card-name');
 const link = document.getElementById('card-image'); 
 const namePopupImage = document.querySelector('.popup-image__picture')
 const namePopupTitle = document.querySelector('.popup-image__description')
-const buttonSelector = document.querySelector ('.popup__button')
-const buttonDisabledClass = document.querySelector ('popup__button_disabled')
+const cardButtonSelector = document.querySelector ('.popup__button_place')
 
 //Картинки из коробки
 const initialCards = [
@@ -86,17 +82,12 @@ const renderCard = (cardList, cardElement) => {
 
 formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
-    console.log(1);
     renderCard(cardList, addCard(name.value, link.value));
-    console.log(2);
     name.value = '';
-    console.log(3);
     link.value = '';
-    console.log(4);
     formCard.reset();
-    console.log(5);
-    buttonSelector.setAttribute('disabled', true);
-    console.log(6);
+    cardButtonSelector.classList.add('popup__button_disabled')
+    cardButtonSelector.setAttribute('disabled', true);
     closePopup(cardPopup);
 });
 
