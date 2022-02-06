@@ -1,8 +1,5 @@
 export { closePopup, openPopup, closeByClick };
 
-import { enableValidation } from './validate.js'
-import { validationConfig } from '../index.js'
-
 function closeByEscape(evt) {
     if (evt.key === 'Escape') {
       const openedPopup = document.querySelector('.popup_opened')
