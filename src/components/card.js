@@ -17,8 +17,10 @@ const cardButtonSelector = document.querySelector ('.popup__button_place')
 formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
     cardButtonSelector.textContent = 'Сохранение...';
-    addNewCard(name.value, link.value)
-    createCard(name.value, link.value);
+    getAppInfo((cardData) => {
+        createCard(cardData, name.value, link.value, currentUserId, cardUserId);
+    })
+    addNewCard(name.value, link.value);
     name.value = '';
     link.value = '';
     formCard.reset();
@@ -30,13 +32,6 @@ formCard.addEventListener('submit', function(evt) {
 closeImageButton.addEventListener('click', function () {
     closePopup(imagePopup);
 });
-
-
-// cardData - объект карточки, который пришел от сервера
-// currentUserId - id текущего пользователя, которого мы запросили ранее
-// handleLikeClick - колбэк-обработчик клика по лайку
-// handleDeleteClick - колбэк-обработчик клика по кнопке удаления
-
 
 export const createCard = (cardData, currentUserId, cardUserId) => {
   const cardTemplate = document.querySelector('#card-template').content;
