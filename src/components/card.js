@@ -1,4 +1,5 @@
 import { closePopup, openPopup, } from './utils.js'
+import { getAppInfo, addNewCard, sendLike, removeLike, deleteCard } from './api.js';
 
 const closeImageButton = document.querySelector('.popup_close_image');
 const cardPopup = document.querySelector('.popup_type_card');
@@ -9,80 +10,15 @@ const name = document.getElementById('card-name');
 const link = document.getElementById('card-image'); 
 const namePopupImage = document.querySelector('.popup-image__picture')
 const namePopupTitle = document.querySelector('.popup-image__description')
+const likeCounterElement = document.querySelector('.element__like-counter');
 const cardButtonSelector = document.querySelector ('.popup__button_place')
 
-//Картинки из коробки
-const initialCards = [
-    {
-      name: 'Архыз',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-      name: 'Челябинская область',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-      name: 'Иваново',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-      name: 'Камчатка',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-      name: 'Холмогорский район',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-      name: 'Байкал',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-    ];
-
     //Добавление карточек
-
-const handleCardRemoveClick = (event) => {
-    event.target.closest('.element').remove()
-}
-
-function addCard(name, link) {
-    const cardTemplate = document.querySelector('#card-template').content
-    const cardElement = cardTemplate.querySelector('.element').cloneNode(true)
-  
-    const imageElement = cardElement.querySelector('.element__image')
-    const titleElement = cardElement.querySelector('.element__text')
-    
-    cardElement.querySelector('.element__like').addEventListener('click', function (evt) {
-        evt.target.classList.toggle('element__like_active');
-    });
-
-    cardElement.querySelector('.element__delete').addEventListener('click', handleCardRemoveClick);
-    imageElement.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        namePopupImage.src = link
-        namePopupImage.alt = name
-        namePopupTitle.textContent = name
-        openPopup(imagePopup);
-    });
-
-    imageElement.src = link
-    imageElement.alt = name
-    titleElement.textContent = name
-
-    return cardElement
-  }
-
-initialCards.forEach((item) => {
-    cardList.prepend(addCard(item.name, item.link))
-})
-
-const renderCard = (cardList, cardElement) => {
-    cardList.prepend(cardElement)
-}
-
 formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
-    renderCard(cardList, addCard(name.value, link.value));
+    cardButtonSelector.textContent = 'Сохранение...';
+    addNewCard(name.value, link.value)
+    createCard(name.value, link.value);
     name.value = '';
     link.value = '';
     formCard.reset();
@@ -95,4 +31,78 @@ closeImageButton.addEventListener('click', function () {
     closePopup(imagePopup);
 });
 
+
+// cardData - объект карточки, который пришел от сервера
+// currentUserId - id текущего пользователя, которого мы запросили ранее
+// handleLikeClick - колбэк-обработчик клика по лайку
+// handleDeleteClick - колбэк-обработчик клика по кнопке удаления
+
+
+export const createCard = (cardData, currentUserId, cardUserId) => {
+  const cardTemplate = document.querySelector('#card-template').content;
+  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+  const imageElement = cardElement.querySelector('.element__image');
+  const titleElement = cardElement.querySelector('.element__text');
+
+  const cardId = cardData._id
+  const likeElement = cardElement.querySelector('.element__like');
+  const likeCounterElement = cardElement.querySelector('.element__like-counter');
+  likeCounterElement.textContent = cardData.likes.length.toString();
+  const isLiked = Boolean(cardData.likes.find(user => user._id === currentUserId));
+    if (isLiked) {
+        likeElement.classList.add('element__like_active');
+    } else {
+        likeElement.classList.remove('element__like_active');
+    }
+    
+  const handleCardLike = (likeCounterElement) => {
+    if (!likeElement.classList.contains('element__like_active')) {
+        sendLike(cardId).then((cardData) => {
+        likeElement.classList.toggle('element__like_active');
+        likeCounterElement.textContent = cardData.likes.length.toString()
+        })
+        .catch((err) => {
+        console.log(err)
+        });
+    } else {
+        removeLike(cardId).then((cardData) => {
+        likeElement.classList.toggle('element__like_active');
+        likeCounterElement.textContent = cardData.likes.length.toString()
+        })
+        .catch((err) => {
+        console.log(err)
+        });
+    }
+  };
+
+
+  likeElement.addEventListener('click', () => handleCardLike(cardElement, cardId, isLiked));
+  
+  const handleDeleteClick = (cardElement, cardId) => {
+    deleteCard(cardId)
+      .then(() => { 
+        cardElement.remove();
+      })
+      .catch(err => console.log('Не удалось удалить карточку'));
+  };
+
+  const deleteElement = cardElement.querySelector('.element__delete');
+  const isOwner = cardUserId === currentUserId;
+  deleteElement.classList.add(isOwner ? 'element__delete_active' : 'element__delete_hidden');
+  deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));
+
+  imageElement.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      namePopupImage.src = cardData.link
+      namePopupImage.alt = cardData.name
+      namePopupTitle.textContent = cardData.name
+      openPopup(imagePopup);
+  });
+
+  imageElement.src = cardData.link
+  imageElement.alt = cardData.name
+  titleElement.textContent = cardData.name
+  return cardElement
+
+};
 

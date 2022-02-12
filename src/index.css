@@ -16,9 +16,10 @@
 @import url(../src/blocks/elements/elements.css);
 @import url(../src/blocks/element/element.css);
 @import url(../src/blocks/element/__image/element__image.css);
-@import url(../src/blocks/element/__delete/_active/element__delete_active.css);
 @import url(../src/blocks/element/__text/element__text.css);
 @import url(../src/blocks/element/__delete/element__delete.css);
+@import url(../src/blocks/element/__delete/_active/element__delete_active.css);
+@import url(../src/blocks/element/__delete/_hidden/element__delete_hidden.css);
 @import url(../src/blocks/element/__like/element__like.css);
 @import url(../src/blocks/element/__like/_active/element__like_active.css);
 @import url(../src/blocks/element/__like-counter/element__like-counter.css);
