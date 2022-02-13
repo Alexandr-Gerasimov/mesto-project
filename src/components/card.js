@@ -11,38 +11,46 @@ const link = document.getElementById('card-image');
 const namePopupImage = document.querySelector('.popup-image__picture')
 const namePopupTitle = document.querySelector('.popup-image__description')
 const likeCounterElement = document.querySelector('.element__like-counter');
-const cardButtonSelector = document.querySelector ('.popup__button_place')
+const cardButtonSelector = document.querySelector ('.popup__button_place');
+const avatarElement = document.querySelector('.profile__avatar');
+const profileName = document.querySelector('.profile-info__name');
+const profileStatus = document.querySelector('.profile-info__status');
 
     //Добавление карточек
 formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
     cardButtonSelector.textContent = 'Сохранение...';
-    getAppInfo((cardData) => {
-        createCard(cardData, name.value, link.value, currentUserId, cardUserId);
+    addNewCard(name.value, link.value)
+    .then(() => {
+        name.value = '';
+        link.value = '';
+        formCard.reset();
+        cardButtonSelector.classList.add('popup__button_disabled')
+        cardButtonSelector.setAttribute('disabled', true)
+        closePopup(cardPopup)
+        location.reload()
     })
-    addNewCard(name.value, link.value);
-    name.value = '';
-    link.value = '';
-    formCard.reset();
-    cardButtonSelector.classList.add('popup__button_disabled')
-    cardButtonSelector.setAttribute('disabled', true);
-    closePopup(cardPopup);
+    .catch((err) => {
+        console.log(err);
+    })
+    .finally(() => {
+        cardButtonSelector.textContent = 'Создать';
+    })
 });
 
 closeImageButton.addEventListener('click', function () {
     closePopup(imagePopup);
 });
+const cardTemplate = document.querySelector('#card-template').content;
 
-export const createCard = (cardData, currentUserId, cardUserId) => {
-  const cardTemplate = document.querySelector('#card-template').content;
+export const createCard = (cardData, currentUserId, cardUserId) => { 
   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
   const imageElement = cardElement.querySelector('.element__image');
   const titleElement = cardElement.querySelector('.element__text');
-
-  const cardId = cardData._id
   const likeElement = cardElement.querySelector('.element__like');
   const likeCounterElement = cardElement.querySelector('.element__like-counter');
   likeCounterElement.textContent = cardData.likes.length.toString();
+  const cardId = cardData._id
   const isLiked = Boolean(cardData.likes.find(user => user._id === currentUserId));
     if (isLiked) {
         likeElement.classList.add('element__like_active');
@@ -50,7 +58,29 @@ export const createCard = (cardData, currentUserId, cardUserId) => {
         likeElement.classList.remove('element__like_active');
     }
     
-  const handleCardLike = (likeCounterElement) => {
+  likeElement.addEventListener('click', () => handleCardLike(likeElement, cardId, likeCounterElement));
+
+  const deleteElement = cardElement.querySelector('.element__delete');
+  const isOwner = cardUserId === currentUserId;
+  deleteElement.classList.add(isOwner ? 'element__delete_active' : 'element__delete_hidden');
+  deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));
+
+  imageElement.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      namePopupImage.src = cardData.link
+      namePopupImage.alt = cardData.name
+      namePopupTitle.textContent = cardData.name
+      openPopup(imagePopup);
+  });
+
+  imageElement.src = cardData.link
+  imageElement.alt = cardData.name
+  titleElement.textContent = cardData.name
+
+  return cardElement
+};
+
+const handleCardLike = (likeElement, cardId, likeCounterElement) => {
     if (!likeElement.classList.contains('element__like_active')) {
         sendLike(cardId).then((cardData) => {
         likeElement.classList.toggle('element__like_active');
@@ -70,9 +100,6 @@ export const createCard = (cardData, currentUserId, cardUserId) => {
     }
   };
 
-
-  likeElement.addEventListener('click', () => handleCardLike(cardElement, cardId, isLiked));
-  
   const handleDeleteClick = (cardElement, cardId) => {
     deleteCard(cardId)
       .then(() => { 
@@ -80,24 +107,35 @@ export const createCard = (cardData, currentUserId, cardUserId) => {
       })
       .catch(err => console.log('Не удалось удалить карточку'));
   };
+  
 
-  const deleteElement = cardElement.querySelector('.element__delete');
-  const isOwner = cardUserId === currentUserId;
-  deleteElement.classList.add(isOwner ? 'element__delete_active' : 'element__delete_hidden');
-  deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));
+    /* //Добавление карточек
+    formCard.addEventListener('submit', function(evt) {
+        evt.preventDefault();
+        addNewCard(name.value, link.value);
+        name.value = '';
+        link.value = '';
+        cardButtonSelector.textContent = 'Сохранение...';
+        getAppInfo()
+        .then((cardData, currentUserId, cardUserId) => {
+            createCard(cardData, currentUserId, cardUserId);
+            console.log(4)
+            formCard.reset();
+            console.log(5)
+            cardButtonSelector.classList.add('popup__button_disabled')
+            cardButtonSelector.setAttribute('disabled', true)
+            console.log(6)
+            closePopup(cardPopup)
+            console.log(7)
+        })
+        .catch((err) => {
+            console.log(err);
+            console.log(8)
+        })
+        .finally(() => {
+            cardButtonSelector.textContent = 'Создать';
+        })
+        return createCard;
+    });
 
-  imageElement.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      namePopupImage.src = cardData.link
-      namePopupImage.alt = cardData.name
-      namePopupTitle.textContent = cardData.name
-      openPopup(imagePopup);
-  });
-
-  imageElement.src = cardData.link
-  imageElement.alt = cardData.name
-  titleElement.textContent = cardData.name
-  return cardElement
-
-};
-
+    */

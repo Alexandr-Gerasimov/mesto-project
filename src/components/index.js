@@ -31,7 +31,8 @@ getAppInfo()
     const initialCards = cards
     initialCards.forEach((cardData) => {
       cardList.prepend(createCard(cardData, currentUserId, cardData.owner._id))
-      console.log(cardData._id)
     })
   })
   .catch(err => console.log(err));
+
+  

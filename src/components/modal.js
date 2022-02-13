@@ -20,22 +20,18 @@ const link = document.getElementById('profile-avatar');
 const avatarButtonSelector = document.querySelector('.popup__button_avatar');
 const profileButtonSelector = document.querySelector('.popup__button_profile')
 const popupButtonSubmit = document.querySelector('.popup__button');
-const cardButtonSelector = document.querySelector ('.popup__button_place')
 
 openProfileButton.addEventListener('click', function () {
-  popupButtonSubmit.textContent = 'Сохранить';
   profileNameInput.value = profileName.textContent;
   profileStatusInput.value = profileStatus.textContent;
   openPopup(profilePopup);
 });
 
 openCardButton.addEventListener('click', function () {
-  cardButtonSelector.textContent = 'Создать';
   openPopup(cardPopup);
 });
 
 openAvatarButton.addEventListener('click', function () {
-  popupButtonSubmit.textContent = 'Сохранить';
   openPopup(avatarPopup);
 })
 
@@ -55,14 +51,22 @@ closeAvatarButton.addEventListener('click', function () {
 
 export function handleProfileSubmit(evt) {
   evt.preventDefault();
-  popupButtonSubmit.textContent = 'Сохранение...';
   profileName.textContent = profileNameInput.value;
   profileStatus.textContent = profileStatusInput.value;
-  profileUpdate(profileNameInput.value, profileStatusInput.value);
-  profileElement.reset();
-  profileButtonSelector.classList.add('popup__button_disabled')
-  profileButtonSelector.setAttribute('disabled', true);
-  closePopup(profilePopup)
+  popupButtonSubmit.textContent = 'Сохранение...';
+  profileUpdate(profileNameInput.value, profileStatusInput.value)
+  .then(() => {
+    profileElement.reset();
+    profileButtonSelector.classList.add('popup__button_disabled')
+    profileButtonSelector.setAttribute('disabled', true);
+    closePopup(profilePopup)
+  })
+  .catch((err) => {
+      console.log(err);
+  })
+  .finally(() => {
+    popupButtonSubmit.textContent = 'Сохранить';
+  })
 }
 
 profileElement.addEventListener('submit', handleProfileSubmit);
@@ -72,13 +76,21 @@ export function changeAvatar(evt) {
   evt.preventDefault();
   const avatarElement = document.querySelector('.profile__avatar');
   avatarElement.src = link.value;
-  avatarUpdate(link.value);
   popupButtonSubmit.textContent = 'Сохранение...';
-  link.value = '';
-  avatarForm.reset();
-  avatarButtonSelector.classList.add('popup__button_disabled')
-  avatarButtonSelector.setAttribute('disabled', true);
-  closePopup(avatarPopup);
+  avatarUpdate(link.value)
+  .then(() => {
+    link.value = '';
+    avatarForm.reset();
+    avatarButtonSelector.classList.add('popup__button_disabled')
+    avatarButtonSelector.setAttribute('disabled', true);
+    closePopup(avatarPopup);
+  })
+  .catch((err) => {
+      console.log(err);
+  })
+  .finally(() => {
+    popupButtonSubmit.textContent = 'Сохранить';
+  })
 }
 
 avatarPopup.addEventListener('submit', changeAvatar)

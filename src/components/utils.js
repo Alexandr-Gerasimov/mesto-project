@@ -10,13 +10,13 @@ function closeByEscape(evt) {
 function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', closeByEscape);
-    document.addEventListener('click', closeByClick);
+    popup.addEventListener('click', closeByClick);
 }
   
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', closeByEscape);
-    document.removeEventListener('click', closeByClick);
+    popup.removeEventListener('click', closeByClick);
 }
 
 function closeByClick(evt) {

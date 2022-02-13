@@ -51,10 +51,9 @@ export const avatarUpdate = (avatar) => {
     body: JSON.stringify({
       avatar: avatar
     })
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+  }).then((res) => {
+    return getResponseData(res);
+  });
 };
 
 export const addNewCard = (name, link, currentUserId) => {
