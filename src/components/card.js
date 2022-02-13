@@ -21,14 +21,14 @@ formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
     cardButtonSelector.textContent = 'Сохранение...';
     addNewCard(name.value, link.value)
-    .then(() => {
+    .then((cardData, userId) => {
+        addCard(cardData, cardList, userId)
         name.value = '';
         link.value = '';
         formCard.reset();
         cardButtonSelector.classList.add('popup__button_disabled')
         cardButtonSelector.setAttribute('disabled', true)
         closePopup(cardPopup)
-        location.reload()
     })
     .catch((err) => {
         console.log(err);
@@ -38,12 +38,17 @@ formCard.addEventListener('submit', function(evt) {
     })
 });
 
+export const addCard = (cardData, cardList, userId) => {
+    const card = createCard(cardData, userId);
+    cardList.prepend(card);
+  };
+
 closeImageButton.addEventListener('click', function () {
     closePopup(imagePopup);
 });
 const cardTemplate = document.querySelector('#card-template').content;
 
-export const createCard = (cardData, currentUserId, cardUserId) => { 
+export const createCard = (cardData, userId) => { 
   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
   const imageElement = cardElement.querySelector('.element__image');
   const titleElement = cardElement.querySelector('.element__text');
@@ -51,7 +56,7 @@ export const createCard = (cardData, currentUserId, cardUserId) => {
   const likeCounterElement = cardElement.querySelector('.element__like-counter');
   likeCounterElement.textContent = cardData.likes.length.toString();
   const cardId = cardData._id
-  const isLiked = Boolean(cardData.likes.find(user => user._id === currentUserId));
+  const isLiked = Boolean(cardData.likes.find(userData => userData._id === userId));
     if (isLiked) {
         likeElement.classList.add('element__like_active');
     } else {
@@ -61,7 +66,7 @@ export const createCard = (cardData, currentUserId, cardUserId) => {
   likeElement.addEventListener('click', () => handleCardLike(likeElement, cardId, likeCounterElement));
 
   const deleteElement = cardElement.querySelector('.element__delete');
-  const isOwner = cardUserId === currentUserId;
+  const isOwner = cardData.owner._id === userId;
   deleteElement.classList.add(isOwner ? 'element__delete_active' : 'element__delete_hidden');
   deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));
 
@@ -109,33 +114,72 @@ const handleCardLike = (likeElement, cardId, likeCounterElement) => {
   };
   
 
-    /* //Добавление карточек
-    formCard.addEventListener('submit', function(evt) {
-        evt.preventDefault();
-        addNewCard(name.value, link.value);
+    /* formCard.addEventListener('submit', function(evt) {
+    evt.preventDefault();
+    cardButtonSelector.textContent = 'Сохранение...';
+    addNewCard(name.value, link.value)
+    .then((cardData) => {
+        addCard = (cardData, cardList, currentUserId)
         name.value = '';
         link.value = '';
-        cardButtonSelector.textContent = 'Сохранение...';
-        getAppInfo()
-        .then((cardData, currentUserId, cardUserId) => {
-            createCard(cardData, currentUserId, cardUserId);
-            console.log(4)
-            formCard.reset();
-            console.log(5)
-            cardButtonSelector.classList.add('popup__button_disabled')
-            cardButtonSelector.setAttribute('disabled', true)
-            console.log(6)
-            closePopup(cardPopup)
-            console.log(7)
-        })
-        .catch((err) => {
-            console.log(err);
-            console.log(8)
-        })
-        .finally(() => {
-            cardButtonSelector.textContent = 'Создать';
-        })
-        return createCard;
-    });
+        formCard.reset();
+        cardButtonSelector.classList.add('popup__button_disabled')
+        cardButtonSelector.setAttribute('disabled', true)
+        closePopup(cardPopup)
+        location.reload()
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    .finally(() => {
+        cardButtonSelector.textContent = 'Создать';
+    })
+});
 
+export const addCard = (cardData, cardList, currentUserId) => {
+    const card = createCard(cardData, currentUserId);
+    cardList.prepend(card);
+  };
+
+closeImageButton.addEventListener('click', function () {
+    closePopup(imagePopup);
+});
+const cardTemplate = document.querySelector('#card-template').content;
+
+export const createCard = (cardData, currentUserId, cardUserId) => { 
+  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+  const imageElement = cardElement.querySelector('.element__image');
+  const titleElement = cardElement.querySelector('.element__text');
+  const likeElement = cardElement.querySelector('.element__like');
+  const likeCounterElement = cardElement.querySelector('.element__like-counter');
+  likeCounterElement.textContent = cardData.likes.length.toString();
+  const cardId = cardData._id
+  const isLiked = Boolean(cardData.likes.find(user => user._id === currentUserId));
+    if (isLiked) {
+        likeElement.classList.add('element__like_active');
+    } else {
+        likeElement.classList.remove('element__like_active');
+    }
+    
+  likeElement.addEventListener('click', () => handleCardLike(likeElement, cardId, likeCounterElement));
+
+  const deleteElement = cardElement.querySelector('.element__delete');
+  const isOwner = cardUserId === currentUserId;
+  deleteElement.classList.add(isOwner ? 'element__delete_active' : 'element__delete_hidden');
+  deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));
+
+  imageElement.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      namePopupImage.src = cardData.link
+      namePopupImage.alt = cardData.name
+      namePopupTitle.textContent = cardData.name
+      openPopup(imagePopup);
+  });
+
+  imageElement.src = cardData.link
+  imageElement.alt = cardData.name
+  titleElement.textContent = cardData.name
+
+  return cardElement
+};
     */
