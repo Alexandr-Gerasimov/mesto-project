@@ -2,7 +2,7 @@ import '../index.css';
 import './validate.js';
 import './modal.js';
 import './card.js';
-import { getAppInfo, } from './api.js';
+import { getAppInfo, api } from './api.js';
 import { enableValidation } from './validate.js'
 import { createCard } from './card';
 

@@ -1,5 +1,5 @@
 import { closePopup, openPopup, } from './utils.js'
-import { getAppInfo, addNewCard, sendLike, removeLike, deleteCard } from './api.js';
+import { getAppInfo, addNewCard, sendLike, removeLike, deleteCard, api } from './api.js';
 
 const closeImageButton = document.querySelector('.popup_close_image');
 const cardPopup = document.querySelector('.popup_type_card');
@@ -17,7 +17,7 @@ const profileStatus = document.querySelector('.profile-info__status');
 let userId = null
 //Добавление карточек
 
-getAppInfo()
+api.getAppInfo()
   .then(([user, cards]) => {
     profileName.textContent = user.name;
     profileStatus.textContent = user.about;
@@ -35,7 +35,7 @@ getAppInfo()
 formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
     cardButtonSelector.textContent = 'Сохранение...';
-    addNewCard(name.value, link.value)
+    api.addNewCard(name.value, link.value)
     .then((cardData) => {
         addCard(cardData, cardList, userId)
         console.log(userId)
@@ -72,6 +72,7 @@ export const createCard = (cardData, userId) => {
   const likeElement = cardElement.querySelector('.element__like');
   const likeCounterElement = cardElement.querySelector('.element__like-counter');
   likeCounterElement.textContent = cardData.likes.length.toString();
+  
   const cardId = cardData._id
   const isLiked = Boolean(cardData.likes.find(userData => userData._id === userId));
     if (isLiked) {
@@ -106,7 +107,7 @@ export const createCard = (cardData, userId) => {
 
 const handleCardLike = (likeElement, cardId, likeCounterElement) => {
     if (!likeElement.classList.contains('element__like_active')) {
-        sendLike(cardId).then((cardData) => {
+        api.sendLike(cardId).then((cardData) => {
         likeElement.classList.toggle('element__like_active');
         likeCounterElement.textContent = cardData.likes.length.toString()
         })
@@ -114,7 +115,7 @@ const handleCardLike = (likeElement, cardId, likeCounterElement) => {
         console.log(err)
         });
     } else {
-        removeLike(cardId).then((cardData) => {
+        api.removeLike(cardId).then((cardData) => {
         likeElement.classList.toggle('element__like_active');
         likeCounterElement.textContent = cardData.likes.length.toString()
         })
@@ -125,7 +126,7 @@ const handleCardLike = (likeElement, cardId, likeCounterElement) => {
   };
 
   const handleDeleteClick = (cardElement, cardId) => {
-    deleteCard(cardId)
+    api.deleteCard(cardId)
       .then(() => { 
         cardElement.remove();
       })

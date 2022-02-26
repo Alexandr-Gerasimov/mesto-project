@@ -1,101 +1,107 @@
-const config = {
-    baseUrl: 'https://nomoreparties.co/v1/plus-cohort-6',
-    headers: {
-      Authorization: '86a9bd37-314e-497d-8d30-dfc746fb3e94', // Токен
-      'Content-Type': 'application/json'
-    }
+class Api {
+  constructor({baseUrl, headers}) {
+    this.baseUrl = baseUrl;
+    this.headers = headers;
+  }
+
+  getResponseData(res) {
+    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
   };
+
+  getUser() {
+    return fetch(`${this.baseUrl}/users/me`, {
+      headers: this.headers})
+    .then(res => this.getResponseData(res))
+  }
+
+  getCards() {
+    return fetch(`${this.baseUrl}/cards`, {
+      headers: this.headers})
+    .then(res => this.getResponseData(res));
+  }
   
-const getResponseData = (res) => {
-  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-};
+  getAppInfo() {
+      return Promise.all([this.getUser(), this.getCards()]);
+      
+  }
 
-
-const getUser = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
-      headers: config.headers
+  profileUpdate(profileName, profileStatus) {
+    return fetch(`${this.baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        name: profileName,
+        about: profileStatus
+      })
     })
-    .then(res => getResponseData(res));
-};
+    .then((res) => {
+      return this.getResponseData(res);
+    })
+  }
   
-const getCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-      headers: config.headers
+  avatarUpdate(avatar) {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: avatar
+      })
+    }).then((res) => {
+      return this.getResponseData(res);
     })
-    .then(res => getResponseData(res))
-};
-
-export const getAppInfo = () => {
-    return Promise.all([getUser(), getCards()]);
-    
-};
-
-export const profileUpdate = (profileName, profileStatus) => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      name: profileName,
-      about: profileStatus
+  }
+  
+  addNewCard(name, link, currentUserId) {
+    return fetch(`${this.baseUrl}/cards`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify({
+        name: name,
+        link: link,
+        owner: currentUserId
+      }),
+    }).then((res) => {
+      return this.getResponseData(res);
     })
-  })
-  .then((res) => {
-    return getResponseData(res);
-  })
-};
-
-export const avatarUpdate = (avatar) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: avatar
+  }
+  
+  sendLike(cardId) {
+    return fetch (`${this.baseUrl}/cards/likes/${cardId}`, {
+      method: 'PUT',
+      headers: this.headers,
     })
-  }).then((res) => {
-    return getResponseData(res);
-  });
-};
-
-export const addNewCard = (name, link, currentUserId) => {
-  return fetch(`${config.baseUrl}/cards`, {
-    method: "POST",
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link,
-      owner: currentUserId
-    }),
-  }).then((res) => {
-    return getResponseData(res);
-  });
-};  
-
-export const sendLike = (cardId) => {
-  return fetch (`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'PUT',
-    headers: config.headers,
-  })
-  .then((res) => {
-    return getResponseData(res);
-  })
+    .then((res) => {
+      return this.getResponseData(res);
+    })
+  }
+  
+  removeLike(cardId) {
+    return fetch (`${this.baseUrl}/cards/likes/${cardId}`, {
+      method: 'DELETE',
+      headers: this.headers,
+    })
+    .then((res) => {
+      return this.getResponseData(res);
+    })
+  }
+  
+  deleteCard(cardId) {
+    return fetch (`${this.baseUrl}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: this.headers,
+    })
+    .then((res) => {
+      return this.getResponseData(res);
+    })
+  }
 }
 
-export const removeLike = (cardId) => {
-  return fetch (`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers,
-  })
-  .then((res) => {
-    return getResponseData(res);
-  })
-}
+export const api = new Api({
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-6',
+  headers: {
+    Authorization: '86a9bd37-314e-497d-8d30-dfc746fb3e94', // Токен
+      'Content-Type': 'application/json'
+  }
+}); 
 
-export const deleteCard = (cardId) => {
-  return fetch (`${config.baseUrl}/cards/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers,
-  })
-  .then((res) => {
-    return getResponseData(res);
-  })
-}
+console.log(api.getAppInfo())

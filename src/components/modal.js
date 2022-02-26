@@ -1,5 +1,5 @@
 import { closePopup, openPopup } from './utils.js'
-import { profileUpdate, avatarUpdate } from './api.js';
+import { profileUpdate, avatarUpdate, api } from './api.js';
 
 const openProfileButton = document.querySelector('.profile-info__edit-button');
 const openCardButton = document.querySelector('.profile__add-button');
@@ -54,7 +54,7 @@ export function handleProfileSubmit(evt) {
   profileName.textContent = profileNameInput.value;
   profileStatus.textContent = profileStatusInput.value;
   popupButtonSubmit.textContent = 'Сохранение...';
-  profileUpdate(profileNameInput.value, profileStatusInput.value)
+  api.profileUpdate(profileNameInput.value, profileStatusInput.value)
   .then(() => {
     profileElement.reset();
     profileButtonSelector.classList.add('popup__button_disabled')
@@ -77,7 +77,7 @@ export function changeAvatar(evt) {
   const avatarElement = document.querySelector('.profile__avatar');
   avatarElement.src = link.value;
   popupButtonSubmit.textContent = 'Сохранение...';
-  avatarUpdate(link.value)
+  api.avatarUpdate(link.value)
   .then(() => {
     link.value = '';
     avatarForm.reset();
