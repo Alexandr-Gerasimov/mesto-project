@@ -1,5 +1,5 @@
-import { closePopup, openPopup } from './utils.js'
-import { profileUpdate, avatarUpdate, api } from './api.js';
+import { popupProfile, popupCard, popupAvatar } from './index.js'
+import { profileUpdate, avatarUpdate, api } from './Api.js';
 
 const openProfileButton = document.querySelector('.profile-info__edit-button');
 const openCardButton = document.querySelector('.profile__add-button');
@@ -24,28 +24,28 @@ const popupButtonSubmit = document.querySelector('.popup__button');
 openProfileButton.addEventListener('click', function () {
   profileNameInput.value = profileName.textContent;
   profileStatusInput.value = profileStatus.textContent;
-  openPopup(profilePopup);
+  popupProfile.open();
 });
 
 openCardButton.addEventListener('click', function () {
-  openPopup(cardPopup);
+  popupCard.open();
 });
 
 openAvatarButton.addEventListener('click', function () {
-  openPopup(avatarPopup);
+  popupAvatar.open();
 })
 
 closeProfileButton.addEventListener('click', function () {
   
-  closePopup(profilePopup);
+  popupProfile.close();
 });
 
 closeCardButton.addEventListener('click', function () {
-  closePopup(cardPopup);
+  popupCard.close();
 });
 
 closeAvatarButton.addEventListener('click', function () {
-  closePopup(avatarPopup);
+  popupAvatar.close();
 });
 
 
@@ -54,12 +54,12 @@ export function handleProfileSubmit(evt) {
   profileName.textContent = profileNameInput.value;
   profileStatus.textContent = profileStatusInput.value;
   popupButtonSubmit.textContent = 'Сохранение...';
-  api.profileUpdate(profileNameInput.value, profileStatusInput.value)
+  api.profileUpdate(profileName.textContent, profileStatus.textContent)
   .then(() => {
     profileElement.reset();
     profileButtonSelector.classList.add('popup__button_disabled')
     profileButtonSelector.setAttribute('disabled', true);
-    closePopup(profilePopup)
+    popupProfile.close();
   })
   .catch((err) => {
       console.log(err);
@@ -67,6 +67,7 @@ export function handleProfileSubmit(evt) {
   .finally(() => {
     popupButtonSubmit.textContent = 'Сохранить';
   })
+      
 }
 
 profileElement.addEventListener('submit', handleProfileSubmit);
@@ -83,7 +84,7 @@ export function changeAvatar(evt) {
     avatarForm.reset();
     avatarButtonSelector.classList.add('popup__button_disabled')
     avatarButtonSelector.setAttribute('disabled', true);
-    closePopup(avatarPopup);
+    popupAvatar.close();
   })
   .catch((err) => {
       console.log(err);

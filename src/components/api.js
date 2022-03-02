@@ -1,4 +1,4 @@
-class Api {
+export default class Api {
   constructor({baseUrl, headers}) {
     this.baseUrl = baseUrl;
     this.headers = headers;
@@ -51,7 +51,7 @@ class Api {
     })
   }
   
-  addNewCard(name, link, currentUserId) {
+  addNewCard(name, link, currentUserId) {так 
     return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
       headers: this.headers,

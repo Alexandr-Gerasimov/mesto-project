@@ -1,5 +1,5 @@
-import { closePopup, openPopup, } from './utils.js'
-import { getAppInfo, addNewCard, sendLike, removeLike, deleteCard, api } from './api.js';
+import { popupCard, popupImage } from './index.js'
+import { api } from './Api.js';
 
 const closeImageButton = document.querySelector('.popup_close_image');
 const cardPopup = document.querySelector('.popup_type_card');
@@ -22,6 +22,7 @@ api.getAppInfo()
     profileName.textContent = user.name;
     profileStatus.textContent = user.about;
     avatarElement.src = user.avatar;
+    console.log(user.name)
     const userData = user._id
     const initialCards = cards
     initialCards.forEach((cardData) => {
@@ -44,7 +45,7 @@ formCard.addEventListener('submit', function(evt) {
         formCard.reset();
         cardButtonSelector.classList.add('popup__button_disabled')
         cardButtonSelector.setAttribute('disabled', true)
-        closePopup(cardPopup)
+        popupCard.close();
     })
     .catch((err) => {
         console.log(err);
@@ -61,7 +62,7 @@ export const addCard = (cardData, cardList, userId) => {
   };
 
 closeImageButton.addEventListener('click', function () {
-    closePopup(imagePopup);
+  popupImage.close();
 });
 const cardTemplate = document.querySelector('#card-template').content;
 
@@ -96,7 +97,7 @@ export const createCard = (cardData, userId) => {
       namePopupImage.src = cardData.link
       namePopupImage.alt = cardData.name
       namePopupTitle.textContent = cardData.name
-      openPopup(imagePopup);
+      popupImage.open();
   });
 
   imageElement.src = cardData.link

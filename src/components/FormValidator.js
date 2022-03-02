@@ -6,6 +6,7 @@ export default class FormValidator {
     this.errorClass = errorClass;
     this.buttonSelector = buttonSelector;
     this.buttonDisabledClass = buttonDisabledClass;
+    this.formElement = formElement;
   }
 
   _showInputError(inputElement, inputInvalidClass, errorElement, errorClass, errorMessage) {
