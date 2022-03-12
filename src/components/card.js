@@ -1,5 +1,6 @@
 import { popupCard, popupImage } from './index.js'
 import { api } from './Api.js';
+import PopupWithImage from './PopupWithImage.js';
 
 const closeImageButton = document.querySelector('.popup_close_image');
 const cardPopup = document.querySelector('.popup_type_card');
@@ -22,7 +23,6 @@ api.getAppInfo()
     profileName.textContent = user.name;
     profileStatus.textContent = user.about;
     avatarElement.src = user.avatar;
-    console.log(user.name)
     const userData = user._id
     const initialCards = cards
     initialCards.forEach((cardData) => {
@@ -39,7 +39,6 @@ formCard.addEventListener('submit', function(evt) {
     api.addNewCard(name.value, link.value)
     .then((cardData) => {
         addCard(cardData, cardList, userId)
-        console.log(userId)
         name.value = '';
         link.value = '';
         formCard.reset();
@@ -57,7 +56,6 @@ formCard.addEventListener('submit', function(evt) {
 
 export const addCard = (cardData, cardList, userId) => {
     const card = createCard(cardData, userId);
-    console.log(userId)
     cardList.prepend(card);
   };
 
@@ -92,13 +90,19 @@ export const createCard = (cardData, userId) => {
 
   deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));
 
-  imageElement.addEventListener('click', function (evt) {
+  /*imageElement.addEventListener('click', function (evt) {
       evt.preventDefault();
       namePopupImage.src = cardData.link
       namePopupImage.alt = cardData.name
       namePopupTitle.textContent = cardData.name
       popupImage.open();
   });
+*/
+  imageElement.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    const popupWithImage = new PopupWithImage(cardData, imagePopup);
+    popupWithImage.open()
+});
 
   imageElement.src = cardData.link
   imageElement.alt = cardData.name

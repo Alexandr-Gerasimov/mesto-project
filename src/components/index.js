@@ -57,7 +57,6 @@ api2.getAppInfo()
     profileName.textContent = user.name;
     profileStatus.textContent = user.about;
     avatarElement.src = user.avatar;
-    console.log(cards)
     cardSection.renderItem(cards)
     userId = user._id
   })

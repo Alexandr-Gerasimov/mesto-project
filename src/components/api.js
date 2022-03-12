@@ -51,7 +51,7 @@ export default class Api {
     })
   }
   
-  addNewCard(name, link, currentUserId) {так 
+  addNewCard(name, link, currentUserId) {
     return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
       headers: this.headers,
