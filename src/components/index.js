@@ -17,6 +17,29 @@ export const validationConfig = {
     buttonDisabledClass: 'popup__button_disabled'
 };
 
+const openProfileButton = document.querySelector(".profile-info__edit-button");
+const openCardButton = document.querySelector(".profile__add-button");
+const openAvatarButton = document.querySelector(".profile__redact");
+const profileNameInput = document.getElementById("profile-name");
+const profileStatusInput = document.getElementById("profile-status");
+
+openProfileButton.addEventListener("click", function () {
+  profileNameInput.value = profileName.textContent;
+  profileStatusInput.value = profileStatus.textContent;
+  popupProfile.open();
+  popupProfile.setEventListeners();
+});
+
+openCardButton.addEventListener("click", function () {
+  popupCard.open();
+  popupCard.setEventListeners();
+});
+
+openAvatarButton.addEventListener("click", function () {
+  popupAvatar.open();
+  popupAvatar.setEventListeners();
+});
+
 const avatarForm = document.getElementById('popup-avatar');
 const profileElement = document.getElementById('popup-input');
 const formCard = document.getElementById('popup-place');

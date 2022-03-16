@@ -1,14 +1,6 @@
-import { popupProfile, popupCard, popupAvatar } from './index.js'
-import { profileUpdate, avatarUpdate, api } from './Api.js';
+import { popupProfile, popupAvatar } from './index.js'
+import api from './Api.js';
 
-const openProfileButton = document.querySelector('.profile-info__edit-button');
-const openCardButton = document.querySelector('.profile__add-button');
-const openAvatarButton = document.querySelector('.profile__redact');
-const closeProfileButton = document.querySelector('.popup_close_profile');
-const closeCardButton = document.querySelector('.popup_close_card');
-const closeAvatarButton = document.querySelector('.popup_close_avatar');
-const profilePopup = document.querySelector('.popup_type_profile');
-const cardPopup = document.querySelector('.popup_type_card');
 const avatarPopup = document.querySelector('.popup_type_avatar');
 const avatarForm = document.getElementById('popup-avatar');
 const profileElement = document.getElementById('popup-input');
@@ -20,34 +12,6 @@ const link = document.getElementById('profile-avatar');
 const avatarButtonSelector = document.querySelector('.popup__button_avatar');
 const profileButtonSelector = document.querySelector('.popup__button_profile')
 const popupButtonSubmit = document.querySelector('.popup__button');
-
-openProfileButton.addEventListener('click', function () {
-  profileNameInput.value = profileName.textContent;
-  profileStatusInput.value = profileStatus.textContent;
-  popupProfile.open();
-});
-
-openCardButton.addEventListener('click', function () {
-  popupCard.open();
-});
-
-openAvatarButton.addEventListener('click', function () {
-  popupAvatar.open();
-})
-
-closeProfileButton.addEventListener('click', function () {
-  
-  popupProfile.close();
-});
-
-closeCardButton.addEventListener('click', function () {
-  popupCard.close();
-});
-
-closeAvatarButton.addEventListener('click', function () {
-  popupAvatar.close();
-});
-
 
 export function handleProfileSubmit(evt) {
   evt.preventDefault();
