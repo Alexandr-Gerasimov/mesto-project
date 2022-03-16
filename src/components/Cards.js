@@ -2,18 +2,6 @@ import { popupCard, popupImage } from './index.js'
 import PopupWithImage from './PopupWithImage.js';
 
 const closeImageButton = document.querySelector('.popup_close_image');
-const cardPopup = document.querySelector('.popup_type_card');
-const imagePopup = document.querySelector('.popup_type_image');
-const cardList = document.querySelector('.elements');
-const formCard = document.getElementById('popup-place');
-const name = document.getElementById('card-name');
-const link = document.getElementById('card-image'); 
-const namePopupImage = document.querySelector('.popup-image__picture')
-const namePopupTitle = document.querySelector('.popup-image__description')
-const cardButtonSelector = document.querySelector ('.popup__button_place');
-const avatarElement = document.querySelector('.profile__avatar');
-const profileName = document.querySelector('.profile-info__name');
-const profileStatus = document.querySelector('.profile-info__status');
 
 export default class Card {
     constructor(cardData, selector) {
@@ -21,6 +9,7 @@ export default class Card {
         this._link = cardData._link
         this._likes = cardData._likes;
         this._isOwner = cardData.owner._id
+        this._cardId = cardData._id;
         this._selector = selector;
     }
 
@@ -37,23 +26,30 @@ export default class Card {
     _generate() {
         this._element = this._getElement();
 
-        this._elementImage.querySelector('.element__image');
+        this._elementImage = this._element.querySelector('.element__image');
         this._elementImage.src = this._link;
         this._elementImage.alt = this.name;
 
-        this._elementHeading.querySelector('.element__text');
+        this._elementHeading = this._element.querySelector('.element__text');
         this._elementHeading.textContent = this._name;
 
-        this._elementLike.querySelector('.element__like');
-        
-        this._elementLikeCounter.querySelector('.element__like-counter');
+        this._elementLike = this.element.querySelector('.element__like');
+
+        this._elementLikeCounter = this_element.querySelector('.element__like-counter');
         this._elementLikeCounter.textContent = this._likes.length;
+
+        this._elementRemove = this._element.querySelector('.element__delete');
+
+        this._setLikesState();
+        this.__likeButtonListener();
+        this._setRemoveButtonState();
+        this._deleteCardListener();
 
         return this._element
     }
 
     _setEventListeners() {
-        this._element.addEventListener('click', () => {
+        this._elementImage.addEventListener('click', () => {
             PopupWithImage.open();
         });
     
@@ -62,24 +58,29 @@ export default class Card {
         });
     }
 
+    _setLikesState() {
+        this._isLiked = Boolean(this._likes.find(userData => userData._id === userId));
+
+        if (isLiked) {
+        this._elementLike.classList.add('element__like_active');
+        } else {
+            this._elementLike.classList.remove('element__like_active');
+        }
+    }
+
     _likeButtonListener() {
-        likeElement.addEventListener('click', () => handleCardLike(likeElement, cardId, likeCounterElement));   
+        this._elementLike.
+            addEventListener('click', () => handleCardLike(likeElement, this._cardId, likeCounterElement));   
     }
 
-    _deleteCardListener() {
-        deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));  
-    }
-}
-
-const cardId = cardData._id
-const isLiked = Boolean(cardData.likes.find(userData => userData._id === userId));
-    if (isLiked) {
-        likeElement.classList.add('element__like_active');
-    } else {
-        likeElement.classList.remove('element__like_active');
+    _setRemoveButtonState() {
+        if (userId === this._isOwner) {
+          this._elementRemove.classList.add("element__delete_hidden");
+        }
     }
     
-const deleteElement = cardElement.querySelector('.element__delete');
-    if (userId === this._isOwner) {
-        deleteElement.classList.add('element__delete_hidden')
+    _deleteCardListener() {
+        this._elementRemove
+            .addEventListener('click', () => handleDeleteClick(cardElement, this._cardId));
     }
+}
