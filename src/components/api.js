@@ -22,7 +22,6 @@ export default class Api {
   
   getAppInfo() {
       return Promise.all([this.getUser(), this.getCards()]);
-      
   }
 
   profileUpdate(profileName, profileStatus) {
@@ -34,9 +33,7 @@ export default class Api {
         about: profileStatus
       })
     })
-    .then((res) => {
-      return this.getResponseData(res);
-    })
+    .then(res => this.getResponseData(res))
   }
   
   avatarUpdate(avatar) {
@@ -46,9 +43,7 @@ export default class Api {
       body: JSON.stringify({
         avatar: avatar
       })
-    }).then((res) => {
-      return this.getResponseData(res);
-    })
+    }).then((res) => this.getResponseData(res))
   }
   
   addNewCard(name, link, currentUserId) {
@@ -60,9 +55,7 @@ export default class Api {
         link: link,
         owner: currentUserId
       }),
-    }).then((res) => {
-      return this.getResponseData(res);
-    })
+    }).then(res => this.getResponseData(res))
   }
   
   sendLike(cardId) {
@@ -70,9 +63,7 @@ export default class Api {
       method: 'PUT',
       headers: this.headers,
     })
-    .then((res) => {
-      return this.getResponseData(res);
-    })
+    .then(res => this.getResponseData(res))
   }
   
   removeLike(cardId) {
@@ -80,9 +71,7 @@ export default class Api {
       method: 'DELETE',
       headers: this.headers,
     })
-    .then((res) => {
-      return this.getResponseData(res);
-    })
+    .then(res => this.getResponseData(res))
   }
   
   deleteCard(cardId) {
@@ -90,9 +79,7 @@ export default class Api {
       method: 'DELETE',
       headers: this.headers,
     })
-    .then((res) => {
-      return this.getResponseData(res);
-    })
+    .then(res => this.getResponseData(res))
   }
 }
 

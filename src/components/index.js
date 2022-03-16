@@ -62,9 +62,10 @@ api2.getAppInfo()
   })
   .catch(err => console.log(err));
 
-const cardSection = new Section(
-    {renderer: (cardData) => {
+const cardSection = new Section({
+  renderer: (cardData) => {
       cardSection.addItem(createCard(cardData));
-    }},
+  }
+},
     '.elements'
 );

@@ -14,12 +14,14 @@ const cardButtonSelector = document.querySelector ('.popup__button_place');
 const avatarElement = document.querySelector('.profile__avatar');
 const profileName = document.querySelector('.profile-info__name');
 const profileStatus = document.querySelector('.profile-info__status');
-let userId = null
 
 export default class Card {
     constructor(cardData, selector) {
-        this._cardData = cardData
-        this._selector = selector
+        this._name = cardData._name
+        this._link = cardData._link
+        this._likes = cardData._likes;
+        this._isOwner = cardData.owner._id
+        this._selector = selector;
     }
 
     _getElement() {
@@ -34,10 +36,19 @@ export default class Card {
 
     _generate() {
         this._element = this._getElement();
-        this._element.querySelector('.element__image').src = this._cardData.link
-        this._element.querySelector('.element__text').alt = this._cardData.name
-        this._element.querySelector('.element__like').textContent = this._cardData.name
-        this._element.querySelector('.element__like-counter').textContent = this._cardData.likes.length.toString();
+
+        this._elementImage.querySelector('.element__image');
+        this._elementImage.src = this._link;
+        this._elementImage.alt = this.name;
+
+        this._elementHeading.querySelector('.element__text');
+        this._elementHeading.textContent = this._name;
+
+        this._elementLike.querySelector('.element__like');
+        
+        this._elementLikeCounter.querySelector('.element__like-counter');
+        this._elementLikeCounter.textContent = this._likes.length;
+
         return this._element
     }
 
@@ -58,20 +69,17 @@ export default class Card {
     _deleteCardListener() {
         deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));  
     }
-   
 }
-    const cardId = cardData._id
-    const isLiked = Boolean(cardData.likes.find(userData => userData._id === userId));
-      if (isLiked) {
-          likeElement.classList.add('element__like_active');
-      } else {
-          likeElement.classList.remove('element__like_active');
-      }
-        
-    const deleteElement = cardElement.querySelector('.element__delete');
-    const isOwner = cardData.owner._id;
-      if (userId === isOwner) {
-          deleteElement.classList.add('element__delete_hidden')
-      }
 
-  
+const cardId = cardData._id
+const isLiked = Boolean(cardData.likes.find(userData => userData._id === userId));
+    if (isLiked) {
+        likeElement.classList.add('element__like_active');
+    } else {
+        likeElement.classList.remove('element__like_active');
+    }
+    
+const deleteElement = cardElement.querySelector('.element__delete');
+    if (userId === this._isOwner) {
+        deleteElement.classList.add('element__delete_hidden')
+    }
