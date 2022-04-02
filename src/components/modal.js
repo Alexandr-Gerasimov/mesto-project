@@ -1,5 +1,5 @@
 import { popupProfile, popupAvatar } from './index.js'
-import api from './Api.js';
+import { api } from './Api.js';
 
 const avatarPopup = document.querySelector('.popup_type_avatar');
 const avatarForm = document.getElementById('popup-avatar');

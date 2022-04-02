@@ -6,6 +6,7 @@ import FormValidator from './FormValidator.js'
 import Popup from './Popup.js'
 import Api from './Api.js';
 import Section from './Section.js';
+import UserInfo from './UserInfo';
 import { createCard } from './Card.js';
 
 export const validationConfig = {
@@ -16,6 +17,14 @@ export const validationConfig = {
     buttonSelector: '.popup__button',
     buttonDisabledClass: 'popup__button_disabled'
 };
+
+export const api = new Api({
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-6',
+  headers: {
+    Authorization: '86a9bd37-314e-497d-8d30-dfc746fb3e94', // Токен
+      'Content-Type': 'application/json'
+  }
+}); 
 
 const openProfileButton = document.querySelector(".profile-info__edit-button");
 const openCardButton = document.querySelector(".profile__add-button");
@@ -62,33 +71,18 @@ export const popupProfile = new Popup(profilePopup)
 export const popupCard = new Popup(cardPopup)
 export const popupAvatar = new Popup(avatarPopup)
 export const popupImage = new Popup(imagePopup)
-
-export const api2 = new Api({
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-6',
-  headers: {
-    Authorization: '86a9bd37-314e-497d-8d30-dfc746fb3e94', // Токен
-      'Content-Type': 'application/json'
-  }
-}); 
-
+ 
 const avatarElement = document.querySelector('.profile__avatar');
 const profileName = document.querySelector('.profile-info__name');
 const profileStatus = document.querySelector('.profile-info__status');
-
-api2.getAppInfo()
-  .then(([user, cards]) => {
-    profileName.textContent = user.name;
-    profileStatus.textContent = user.about;
-    avatarElement.src = user.avatar;
-    cardSection.renderItem(cards)
-    userId = user._id
-  })
-  .catch(err => console.log(err));
+const cardTemplate = document.querySelector('#card-template');
 
 const cardSection = new Section({
   renderer: (cardData) => {
-      cardSection.addItem(createCard(cardData));
+      cardSection.addItem(createCard(cardData, cardTemplate));
   }
 },
     '.elements'
 );
+
+const userInfo = new UserInfo()
