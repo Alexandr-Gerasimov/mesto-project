@@ -1,4 +1,4 @@
-import { popupCard, popupImage } from './index.js'
+import { popupCard, popupImage, userInfo } from './index.js'
 import { api } from './Api.js';
 import PopupWithImage from './PopupWithImage.js';
 
@@ -23,7 +23,7 @@ api.getAppInfo()
     profileName.textContent = user.name;
     profileStatus.textContent = user.about;
     avatarElement.src = user.avatar;
-    console.log(1)
+    userInfo.setUserInfo(user);
     const userData = user._id
     const initialCards = cards
     initialCards.forEach((cardData) => {
@@ -36,6 +36,9 @@ api.getAppInfo()
 
 formCard.addEventListener('submit', function(evt) {
     evt.preventDefault();
+    console.log(1);
+    cardButtonSelector.textContent = 'Сохранение...';
+    console.log(2);
     api.addNewCard(name.value, link.value)
     .then((cardData) => {
         addCard(cardData, cardList, userId)
@@ -98,10 +101,9 @@ export const createCard = (cardData, userId) => {
       popupImage.open();
   });
 */
-  imageElement.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    const popupWithImage = new PopupWithImage(cardData, imagePopup);
-    popupWithImage.open()
+imageElement.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  popupImage.open(cardData.name, cardData.link)
 });
 
   imageElement.src = cardData.link
@@ -109,6 +111,8 @@ export const createCard = (cardData, userId) => {
   titleElement.textContent = cardData.name
   return cardElement
 };
+
+
 
 const handleCardLike = (likeElement, cardId, likeCounterElement) => {
     if (!likeElement.classList.contains('element__like_active')) {

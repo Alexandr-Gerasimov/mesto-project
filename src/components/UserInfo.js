@@ -1,20 +1,23 @@
 export default class UserInfo {
-    constructor(nameElement, infoElement) {
-        this.nameElement = nameElement;
-        this.infoElement = infoElement;
+    constructor(profileName, profileStatus, avatarElement) {
+        this._profileName = profileName;
+        this._profileStatus = profileStatus;
+        this._avatarElement = avatarElement;
     }
 
     getUserInfo() {
-        api.getAppInfo()
-        .then(([user, cards]) => {
-            this.nameElement.textContent = user.name;
-            this.infoElement.textContent = user.about;
-        })
-            
+        return {
+            userName: this._profileName.textContent,
+            userDescription: this._profileStatus.textContent,
+            userAvatar: this._avatarElement.src
+        }   
     }
 
-    setUserInfo() {
-        api.profileUpdate(this.nameElement.textContent, this.infoElement.textContent)
+    setUserInfo(profile) {
+        this._profileName.textContent = profile.name;
+        this._profileStatus.textContent = profile.about;
+        this._avatarElement.src = profile.avatar;
+        this._data = profile
     }
 
 }

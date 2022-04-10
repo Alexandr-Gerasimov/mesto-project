@@ -36,12 +36,12 @@ export default class Api {
     .then(res => this.getResponseData(res))
   }
   
-  avatarUpdate(avatar) {
+  avatarUpdate(name) {
     return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
-        avatar: avatar
+        avatar: name
       })
     }).then((res) => this.getResponseData(res))
   }
