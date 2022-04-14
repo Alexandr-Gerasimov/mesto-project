@@ -2,60 +2,60 @@ import '../index.css';
 import './FormValidator.js';
 import './card.js';
 import FormValidator from './FormValidator.js'
-import Api from './Api.js';
 import { api } from './Api.js';
 import Section from './Section.js';
 import UserInfo from './UserInfo';
 import PopupWithForm from './PopupWithForm';
 import PopupWithImage from './PopupWithImage';
+import { createCard } from './card.js';
+import { 
+  validationConfig,
+  openProfileButton,
+  openCardButton,
+  openAvatarButton,
+  profileNameInput,
+  profileStatusInput,
+  avatarForm,
+  profileElement,
+  formCard,
+  profilePopup,
+  cardPopup,
+  avatarPopup,
+  imagePopup,
+  avatarElement,
+  profileName,
+  profileStatus,
+ } from '../utils/constants.js'
 
-export const validationConfig = {
-    formSelector: '.popup__container',
-    inputSelector: '.popup__item',
-    inputInvalidClass: 'popup__item_error',
-    errorClass: 'popup__item-error_active',
-    buttonSelector: '.popup__button',
-    buttonDisabledClass: 'popup__button_disabled'
-};
+const cardSection = new Section(createCard, '.elements');
 
+let userId = null
 
-const openProfileButton = document.querySelector(".profile-info__edit-button");
-const openCardButton = document.querySelector(".profile__add-button");
-const openAvatarButton = document.querySelector(".profile__redact");
-const profileNameInput = document.getElementById('profile-name');
-const profileStatusInput = document.getElementById("profile-status");
-const avatarForm = document.getElementById('popup-avatar');
-const profileElement = document.getElementById('popup-input');
-const formCard = document.getElementById('popup-place');
-const profilePopup = document.querySelector('.popup_type_profile');
-const cardPopup = document.querySelector('.popup_type_card');
-const avatarPopup = document.querySelector('.popup_type_avatar');
-const imagePopup = document.querySelector('.popup_type_image');
-const avatarElement = document.querySelector('.profile__avatar');
-const profileName = document.querySelector('.profile-info__name');
-const profileStatus = document.querySelector('.profile-info__status');
-const cardTemplate = document.querySelector('#card-template');
-
-const cardSection = new Section({
-  renderer: (cardData) => {
-      cardSection.addItem(createCard(cardData, cardTemplate));
-  }
-},
-    '.elements'
-);
-
-//
+api.getAppInfo()
+  .then(([user, cards]) => {
+    profileName.textContent = user.name;
+    profileStatus.textContent = user.about;
+    avatarElement.src = user.avatar;
+    userInfo.setUserInfo(user);
+    const userData = user._id
+    const initialCards = cards
+    initialCards.forEach((cardData) => {
+      cardSection.addItem(createCard(cardData, userData))
+    })
+    userId = user._id
+  })
+  .catch(err => console.log(err));
 
 export const userInfo = new UserInfo(profileName, profileStatus, avatarElement)
 
 export const validProfile = new FormValidator(validationConfig, profileElement);
-validProfile.enableValidation(validationConfig)
+validProfile.enableValidation()
 
 export const validCard = new FormValidator(validationConfig, formCard);
-validCard.enableValidation(validationConfig)
+validCard.enableValidation()
 
 export const validAvatar = new FormValidator(validationConfig, avatarForm);
-validAvatar.enableValidation(validationConfig)
+validAvatar.enableValidation()
 
 
 export const popupImage = new PopupWithImage(imagePopup)
@@ -64,11 +64,10 @@ popupImage.setEventListeners();
 export const popupCard = new PopupWithForm(
 cardPopup,
   (data) => {
-    console.log(data)
     popupCard.renderLoading(true);
     api.addNewCard(data.name, data.link)
-    .then((cardData) => {
-      cardList.prependItem(createCard(cadrData));
+    .then((data) => {
+      cardSection.addItem(createCard(data, userId));
       popupCard.close()
     })
     .catch((err) => console.log(err))
@@ -116,9 +115,10 @@ openProfileButton.addEventListener('click', () => {
 
 openCardButton.addEventListener('click', () => {
   popupCard.open();
-  validCard.enableValidation(validationConfig)
+  validCard.resetValidation()
 })
 
 openAvatarButton.addEventListener('click', () => {
   popupAvatar.open();
+  validAvatar.resetValidation()
 })

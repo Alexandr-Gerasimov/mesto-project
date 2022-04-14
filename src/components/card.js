@@ -1,71 +1,9 @@
-import { popupCard, popupImage, userInfo } from './index.js'
+import { popupImage } from './index.js'
 import { api } from './Api.js';
-import PopupWithImage from './PopupWithImage.js';
-
-const closeImageButton = document.querySelector('.popup_close_image');
-const cardPopup = document.querySelector('.popup_type_card');
-const imagePopup = document.querySelector('.popup_type_image');
-const cardList = document.querySelector('.elements');
-const formCard = document.getElementById('popup-place');
-const name = document.getElementById('card-name');
-const link = document.getElementById('card-image'); 
-const namePopupImage = document.querySelector('.popup-image__picture')
-const namePopupTitle = document.querySelector('.popup-image__description')
-const cardButtonSelector = document.querySelector ('.popup__button_place');
-const avatarElement = document.querySelector('.profile__avatar');
-const profileName = document.querySelector('.profile-info__name');
-const profileStatus = document.querySelector('.profile-info__status');
-let userId = null
-//Добавление карточек
-
-api.getAppInfo()
-  .then(([user, cards]) => {
-    profileName.textContent = user.name;
-    profileStatus.textContent = user.about;
-    avatarElement.src = user.avatar;
-    userInfo.setUserInfo(user);
-    const userData = user._id
-    const initialCards = cards
-    initialCards.forEach((cardData) => {
-      cardList.prepend(createCard(cardData, userData))
-    })
-    userId = user._id
-  })
-  .catch(err => console.log(err));
-
-
-formCard.addEventListener('submit', function(evt) {
-    evt.preventDefault();
-    console.log(1);
-    cardButtonSelector.textContent = 'Сохранение...';
-    console.log(2);
-    api.addNewCard(name.value, link.value)
-    .then((cardData) => {
-        addCard(cardData, cardList, userId)
-        name.value = '';
-        link.value = '';
-        formCard.reset();
-        cardButtonSelector.classList.add('popup__button_disabled')
-        cardButtonSelector.setAttribute('disabled', true)
-        popupCard.close();
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-    .finally(() => {
-        cardButtonSelector.textContent = 'Создать';
-    })
-});
-
-export const addCard = (cardData, cardList, userId) => {
-    const card = createCard(cardData, userId);
-    cardList.prepend(card);
-  };
-
-closeImageButton.addEventListener('click', function () {
-  popupImage.close();
-});
-const cardTemplate = document.querySelector('#card-template').content;
+import { 
+  closeImageButton,
+  cardTemplate
+ } from '../utils/constants.js'
 
 export const createCard = (cardData, userId) => { 
   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
@@ -93,18 +31,10 @@ export const createCard = (cardData, userId) => {
 
   deleteElement.addEventListener('click', () => handleDeleteClick(cardElement, cardId));
 
-  /*imageElement.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      namePopupImage.src = cardData.link
-      namePopupImage.alt = cardData.name
-      namePopupTitle.textContent = cardData.name
-      popupImage.open();
+  imageElement.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    popupImage.open(cardData.name, cardData.link)
   });
-*/
-imageElement.addEventListener('click', function (evt) {
-  evt.preventDefault();
-  popupImage.open(cardData.name, cardData.link)
-});
 
   imageElement.src = cardData.link
   imageElement.alt = cardData.name
@@ -112,32 +42,34 @@ imageElement.addEventListener('click', function (evt) {
   return cardElement
 };
 
-
+closeImageButton.addEventListener('click', function () {
+  popupImage.close();
+});
 
 const handleCardLike = (likeElement, cardId, likeCounterElement) => {
-    if (!likeElement.classList.contains('element__like_active')) {
-        api.sendLike(cardId).then((cardData) => {
-        likeElement.classList.toggle('element__like_active');
-        likeCounterElement.textContent = cardData.likes.length.toString()
-        })
-        .catch((err) => {
-        console.log(err)
-        });
-    } else {
-        api.removeLike(cardId).then((cardData) => {
-        likeElement.classList.toggle('element__like_active');
-        likeCounterElement.textContent = cardData.likes.length.toString()
-        })
-        .catch((err) => {
-        console.log(err)
-        });
-    }
-  };
-
-  const handleDeleteClick = (cardElement, cardId) => {
-    api.deleteCard(cardId)
-      .then(() => { 
-        cardElement.remove();
+  if (!likeElement.classList.contains('element__like_active')) {
+      api.sendLike(cardId).then((cardData) => {
+      likeElement.classList.toggle('element__like_active');
+      likeCounterElement.textContent = cardData.likes.length.toString()
       })
-      .catch(err => console.log('Не удалось удалить карточку'));
-  };
+      .catch((err) => {
+      console.log(err)
+      });
+  } else {
+      api.removeLike(cardId).then((cardData) => {
+      likeElement.classList.toggle('element__like_active');
+      likeCounterElement.textContent = cardData.likes.length.toString()
+      })
+      .catch((err) => {
+      console.log(err)
+      });
+  }
+};
+
+const handleDeleteClick = (cardElement, cardId) => {
+  api.deleteCard(cardId)
+    .then(() => { 
+      cardElement.remove();
+    })
+    .catch(err => console.log('Не удалось удалить карточку'));
+};
