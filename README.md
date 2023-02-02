@@ -1,7 +1,17 @@
-Проект Место.
+# Проект Место.
 
 В этом проекте пользователь может вносить свои данные и загружать фотографии с описанием достопримечательностей. Посетители сайта смогут ставить лайки к фотографиям.
 
-В проекте использованы html, css, JavaScript, flex, grid, медиазапросы, popup, запросы на серевр.
+## Использованные технологии и решения:
 
-Ссылка на GitHub Pages: https://alexandr-gerasimov.github.io/mesto-project/
+JavaScript, html, css, flex, grid, медиазапросы, popup, запросы на серевр.
+
+## Запуск проекта:
+
+npm i
+
+npm start
+
+## Ссылка на GitHub Pages: 
+
+https://alexandr-gerasimov.github.io/mesto-project/
